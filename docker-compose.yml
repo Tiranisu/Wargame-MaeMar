@@ -9,10 +9,14 @@ services:
     depends_on:
       - db
     environment:
-      POSTGRES_HOST: db
       POSTGRES_DB: mydb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+    volumes:
+      - ./site:/var/www/html
+      - ./site/apache2/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./site/sql:/docker-entrypoint-initdb.d
+    restart: always
 
   db:
     image: postgres:latest
@@ -24,5 +28,5 @@ services:
     ports:
       - "5432:5432"
     volumes:
-    - ./site/sql:/docker-entrypoint-initdb.d
+      - ./site/sql:/docker-entrypoint-initdb.d
 

@@ -4,6 +4,20 @@ FROM php:8.2-apache
 # Définir le répertoire de travail à l'intérieur du conteneur
 WORKDIR /var/www/html
 
+# Copie de la configuration des hôtes virtuels dans le conteneur
+COPY ./site/apache2/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Activation de la configuration
+RUN a2ensite 000-default.conf
+
+# Activation des modules nécessaires
+RUN a2enmod rewrite vhost_alias
+
+# Installer les dépendances nécessaires et l'extension pdo_pgsql
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo_pgsql
+
 # Copier le contenu du dossier local (le dossier où se trouve votre site) vers /var/www/html dans le conteneur
 COPY ./site/ /var/www/html/
 
