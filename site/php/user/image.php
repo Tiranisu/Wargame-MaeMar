@@ -41,7 +41,7 @@ if (strtolower($file_extension) === 'txt') {
     </div>
 </nav>
 
-<!-- There is a flag in /tmp -->
+<!-- There is a flag in /tmp/flag.txt -->
 
 <?php if ($output): ?>
     <div class="mt-5 text-center pb-16">

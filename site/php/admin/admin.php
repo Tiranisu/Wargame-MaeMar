@@ -12,6 +12,15 @@ if (isset($_GET['comment'])) {
     $comment = $_GET['comment'];
 }
 
+$xmlContent1 = '<?xml version="1.0"?>
+<product>30</product>';
+$xmlContent2 = '<?xml version="1.0"?>
+<product>760</product>';
+$xmlContent3 = '<?xml version="1.0"?>
+<product>310</product>';
+$xmlContent4 = '<?xml version="1.0"?>
+<product>890</product>';
+
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +47,7 @@ if (isset($_GET['comment'])) {
 
 
 <h1 class="w-1/2 mx-auto mt-5 text-center mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white"">Modifiez vos faux avis clients</h1>
+<div id="response" class="w-1/2 mx-auto mt-5 text-center mb-2 font-bold tracking-tight text-green-5900 dark:text-white"></div>
 <div class="grid grid-cols-2 gap-6 w-1/2 mx-auto mt-5 pb-16 mb-5">
     <div class="mx-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
@@ -69,6 +79,11 @@ if (isset($_GET['comment'])) {
                 <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
             </div>
             <p class="mb-3 font-bold dark:text-gray-400">Excellente performance et interface utilisateur intuitive.</p>
+            <!-- There is a flag in /etc/flag2.txt -->
+            <textarea id="xmlInput1" class="hidden"><?php echo htmlspecialchars($xmlContent1, ENT_QUOTES, 'UTF-8'); ?></textarea>
+            <button id="sendButton1" type="button" class="mt-5 mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Connaitre le stock
+            </button>
         </div>
     </div>
 
@@ -102,6 +117,11 @@ if (isset($_GET['comment'])) {
                 <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
             </div>
             <p class="mb-3 font-bold dark:text-gray-400">Très efficace, mais consomme un peu trop de ressources système.</p>
+            <!-- There is a flag in /etc/flag2.txt -->
+            <textarea id="xmlInput2" class="hidden"><?php echo htmlspecialchars($xmlContent2, ENT_QUOTES, 'UTF-8'); ?></textarea>
+            <button id="sendButton2" type="button" class="mt-5 mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Connaitre le stock
+            </button>
         </div>
     </div>
 
@@ -135,6 +155,11 @@ if (isset($_GET['comment'])) {
                 <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
             </div>
             <p class="mb-3 font-bold dark:text-gray-400">Connexion stable et bon choix de serveurs, mais prix légèrement élevé.</p>
+            <!-- There is a flag in /etc/flag2.txt -->
+            <textarea id="xmlInput3" class="hidden"><?php echo htmlspecialchars($xmlContent3, ENT_QUOTES, 'UTF-8'); ?></textarea>
+            <button id="sendButton3" type="button" class="mt-5 mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Connaitre le stock
+            </button>
         </div>
     </div>
 
@@ -175,6 +200,11 @@ if (isset($_GET['comment'])) {
                 </button>
             </div>
             <p class="my-3 font-bold dark:text-gray-400"><?= $comment ?></p>
+            <!-- There is a flag in /etc/flag2.txt -->
+            <textarea id="xmlInput4" class="hidden"><?php echo htmlspecialchars($xmlContent4, ENT_QUOTES, 'UTF-8'); ?></textarea>
+            <button id="sendButton4" type="button" class="mt-5 mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Connaitre le stock
+            </button>
         </div>
     </div>
 </div>
@@ -194,6 +224,36 @@ if (isset($_GET['comment'])) {
 
         window.location.href = newUrl;
     }
+
+    function sendXmlRequest(xmlString) {
+        console.log(xmlString);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "stock.php", true);
+        xhr.setRequestHeader("Content-Type", "application/xml");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('response').innerText = xhr.responseText;
+            }
+        };
+        xhr.send(xmlString);
+    }
+    document.getElementById("sendButton1").addEventListener("click", function() {
+        const xmlString = document.getElementById("xmlInput1").value;
+        sendXmlRequest(xmlString);
+    });
+    document.getElementById("sendButton2").addEventListener("click", function() {
+        const xmlString = document.getElementById("xmlInput2").value;
+        sendXmlRequest(xmlString);
+    });
+    document.getElementById("sendButton3").addEventListener("click", function() {
+        const xmlString = document.getElementById("xmlInput3").value;
+        sendXmlRequest(xmlString);
+    });
+    document.getElementById("sendButton4").addEventListener("click", function() {
+        const xmlString = document.getElementById("xmlInput4").value;
+        sendXmlRequest(xmlString);
+    });
+
 </script>
 
 

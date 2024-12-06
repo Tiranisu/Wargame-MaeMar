@@ -15,7 +15,7 @@ COPY ./site/php/ /var/www/html/php/
 COPY ./site/sql/ /var/www/html/sql/
 COPY ./site/apache2/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./site/flag.txt /tmp/flag.txt
-
+COPY ./site/flag2.txt /etc/flag2.txt
 
 # Donner les bonnes permissions aux fichiers copié
 RUN chown -R www-data:www-data /var/www/html
