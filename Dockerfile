@@ -10,8 +10,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_pgsql
 
 # Copier le contenu du dossier local (le dossier où se trouve votre site) vers /var/www/html dans le conteneur
-COPY ./site/ /var/www/html/
+COPY ./site/images/ /var/www/html/images/
+COPY ./site/php/ /var/www/html/php/
+COPY ./site/sql/ /var/www/html/sql/
 COPY ./site/apache2/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./site/flag.txt /tmp/flag.txt
 
 
 # Donner les bonnes permissions aux fichiers copié

@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['username'] = $user['username'];
                         $_SESSION['is_admin'] = $user['is_admin'];
-
+                        $sessionId = bin2hex(random_bytes(16));
+                        setcookie('user_session', $sessionId, time() + (7 * 24 * 60 * 60), "/", "", false, true);
                         header('Location: admin.php');
                         exit;
                     } else {
