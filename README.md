@@ -33,10 +33,10 @@ Currently, our development team is hard at work creating a new and improved inte
 ### Landing Page
 
 The first page you will encounter when visiting our website is the Landing Page, accessible at:
-http://localhost:8080/php/user/index.php.
+http://localhost:8080/user/index.php.
 
 This page showcases our entire product catalog, complete with detailed names and descriptions for each item. To make your browsing experience more intuitive, every product card includes a button labeled "View Images." Clicking this button will redirect you to a dedicated page displaying images of the selected product at:
-http://localhost:8080/php/user/image.php.
+http://localhost:8080/user/image.php.
 
 In the top-right corner of the page, you will find two essential buttons:
 
@@ -46,7 +46,7 @@ In the top-right corner of the page, you will find two essential buttons:
 ### Login Page
 
 If you already have an account, you can log in by navigating to the Login Page:
-http://localhost:8080/php/user/login.php.
+http://localhost:8080/user/login.php.
 
 Here, you will be prompted to enter your credentials (username and password) to securely access your account. 
 
@@ -55,7 +55,7 @@ Here, you can log in using your credentials.
 ### Register Page
 
 For users who do not yet have an account, the Register Page is available at:
-http://localhost:8080/php/user/register.php.
+http://localhost:8080/user/register.php.
 
 The registration process is simple and requires only two inputs:
 
@@ -67,7 +67,7 @@ Once registered, you will immediately be able to log in and explore your profile
 ### Profile Page
 
 After logging in, you will gain access to your personalized Profile Page, located at:
-http://localhost:8080/php/user/profile.php.
+http://localhost:8080/user/profile.php.
 
 This page serves as your central hub for account management. It displays your user information and includes a dedicated button to check your account status. This functionality helps users stay updated with their account's role on the platform.
 
