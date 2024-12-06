@@ -9,6 +9,3 @@ CREATE TABLE users (
 -- Add Users
 INSERT INTO users (username, password, is_admin) VALUES
     ('admin', 'S2Frb3VLYWtvdTEyMw==', TRUE);
-
-INSERT INTO users (username, password, is_admin) VALUES
-    ('user', 'dXNlcg==', FALSE)
