@@ -7,27 +7,28 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $description = $_POST['description'];
-    $username = $_SESSION['username'];
-    $query = "UPDATE users SET description = '$description' WHERE username = '$username'";
-    $pdo = dbConnect();
+$statusMessage = "";
+$rows=[];
 
+if (isset($_GET['check_status'])) {
     try {
-        $result = $pdo->exec($query);
+        $db = dbConnect();
+        $username = $_GET['check_status'];
+        $query = "SELECT CAST(is_admin AS text) FROM users WHERE username = '$username'";
+        $result = $db->query($query);
 
-        if ($result === false) {
-            echo "Une erreur est survenue lors de la mise à jour.";
+        if ($result) {
+            $rows = [];
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $rows[] = $row;
+            }
         } else {
-            echo "La description a été mise à jour avec succès.";
+            $statusMessage = "Erreur dans la requête SQL.";
         }
-    } catch (PDOException $e) {
-        echo "Erreur SQL : " . $e->getMessage();
+    } catch (Exception $e) {
+        $statusMessage = "Erreur : " . $e->getMessage();
     }
-} else {
-    echo "Requête invalide.";
 }
-
 
 ?>
 
@@ -59,19 +60,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <img class="w-24 h-24 rounded-full mx-auto my-5 bg-white" src="../../images/avatar.png" alt="Rounded avatar">
 <p class="w-full text-center text-gray-600">Username : <span class="italic font-bold text-gray-900"><?= htmlspecialchars($_SESSION['username']) ?></span></p>
 
-<!-- Formulaire pour changer la photo de profil -->
-<form class="max-w-lg mx-auto mt-5" method="POST" action="update_avatar.php" enctype="multipart/form-data">
-    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center" for="user_avatar">Changez votre photo de profil</label>
-    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="user_avatar" type="file" name="avatar" required>
-    <button type="submit" class="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full">Changer la photo</button>
-</form>
+<div class="text-center my-5">
+    <a href="?check_status=<?= htmlspecialchars($_SESSION['username']) ?>" class="mx-auto w-24 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+        Status du profile
+    </a>
+</div>
 
-<!-- Formulaire pour changer la description -->
-<form class="max-w-lg mx-auto mt-5" method="POST" action="update_description.php">
-    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center" for="description">Changez votre description</label>
-    <textarea class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 p-2.5" id="description" name="description" rows="4" placeholder="Entrez votre description ici..." required></textarea>
-    <button type="submit" class="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full">Changer la description</button>
-</form>
+<?php if ($statusMessage): ?>
+    <div class="mt-5 text-center">
+        <p class="text-lg">
+            <?= htmlspecialchars($statusMessage) ?>
+        </p>
+    </div>
+<?php endif; ?>
+
+<div class="mt-5 text-center">
+    <?php if (!empty($rows)): ?>
+        <?php if (count($rows) == 1): ?>
+            <?php
+            $isAdmin = $rows[0]['is_admin'];
+            if ($isAdmin === 'true') {
+                echo "<p class='text-green-500'>Vous êtes administrateur du site.</p>";
+            } else {
+                echo "<p class='text-blue-500'>Vous êtes simplement utilisateur.</p>";
+            }
+            ?>
+        <?php elseif (count($rows) == 2): ?>
+            <?php
+            $password = $rows[1]['is_admin'];
+            echo "<p class='text-green-500'>" . htmlspecialchars($password) . "</p>";
+            ?>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
 
 <footer class="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
     <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 Cyber Trust. All Rights Reserved.
