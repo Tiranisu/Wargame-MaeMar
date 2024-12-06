@@ -70,3 +70,11 @@ After logging in, you will gain access to your personalized Profile Page, locate
 http://localhost:8080/php/user/profile.php.
 
 This page serves as your central hub for account management. It displays your user information and includes a dedicated button to check your account status. This functionality helps users stay updated with their account's role on the platform.
+
+
+
+## Note to Users
+
+As part of exploring our platform, we challenge you to identify four vulnerabilities hidden within the system. These security flaws are intentionally left as part of an exercise to test your analytical and technical skills.
+
+Good luck, and may your cybersecurity instincts guide you to uncover all four!
